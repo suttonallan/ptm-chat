@@ -28,47 +28,41 @@ const App = () => {
 
   return (
     <div className="app">
-      <header className="site-header">
-        <div className="site-header-inner">🎹 Piano Technique Montréal</div>
+      <header className="ptm-header">
+        <div className="ptm-header-row">
+          <div className="ptm-logo">
+            <span className="ptm-keys" aria-hidden="true" />
+          </div>
+          <div className="ptm-brand">
+            <div className="ptm-brand-title">PIANO TECHNIQUE MONTRÉAL</div>
+            <div className="ptm-brand-subtitle">Techniciens accordeurs</div>
+          </div>
+          <div className="ptm-menu" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+        <button className="ptm-cta">CHOISIR MON RENDEZ-VOUS</button>
       </header>
 
-      <main className="site-main">
-        <section className="hero">
-          <h1 className="hero-title">
-            Accordage et entretien de pianos à Montréal et partout dans le monde
+      <main className="ptm-main">
+        <section className="ptm-hero">
+          <h1 className="ptm-hero-title">
+            ENTRETIEN, <span className="ptm-highlight">ACCORD</span> & RESTAURATION DE PIANOS
           </h1>
-          <p className="hero-subtitle">
-            Expertise gratuite par IA • Accordage • Réparation • Restauration • Inspection Zoom
+          <p className="ptm-hero-subtitle">LA BONNE SANTÉ DE VOTRE PIANO VOUS TIENT À CŒUR?</p>
+          <p className="ptm-hero-text">
+            Nos techniciens accordeurs s&apos;assurent de la richesse et douceur du son, de la précision du
+            toucher, de l&apos;expression des nuances et du confort du jeu pour votre plaisir de jouer.
           </p>
-        </section>
-
-        <section className="services-grid">
-          <div className="service-card">
-            <div className="service-icon">🎼</div>
-            <h3 className="service-title">Accordage professionnel</h3>
-            <p className="service-text">Précision, stabilité et musicalité, adaptés à votre piano.</p>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🔧</div>
-            <h3 className="service-title">Réparation & entretien</h3>
-            <p className="service-text">Interventions fiables pour préserver la mécanique et le toucher.</p>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🪵</div>
-            <h3 className="service-title">Restauration</h3>
-            <p className="service-text">Remise à neuf complète avec respect du caractère d'origine.</p>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">📹</div>
-            <h3 className="service-title">Inspection Zoom</h3>
-            <p className="service-text">Évaluation à distance guidée par un technicien certifié.</p>
-          </div>
+          <button className="ptm-secondary-cta">
+            <span className="ptm-highlight">EN SAVOIR PLUS</span>
+          </button>
         </section>
       </main>
 
-      <footer className="site-footer">
-        © 2026 Piano Technique Montréal
-      </footer>
+      <footer className="ptm-footer">© 2026 Piano Technique Montréal</footer>
 
       {/* WIDGET CHAT FLOTTANT */}
       {!isChatOpen ? (
