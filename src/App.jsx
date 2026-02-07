@@ -27,8 +27,10 @@ const App = () => {
   ].join('\n');
 
   return (
-    <div className="app">
-      <header className="ptm-header">
+    <div className="app app-frame">
+      <div className="phone-frame">
+        <div className="phone-screen">
+          <header className="ptm-header">
         <div className="ptm-header-row">
           <div className="ptm-logo">
             <span className="ptm-keys" aria-hidden="true" />
@@ -44,10 +46,10 @@ const App = () => {
           </div>
         </div>
         <button className="ptm-cta">CHOISIR MON RENDEZ-VOUS</button>
-      </header>
+          </header>
 
-      <main className="ptm-main">
-        <section className="ptm-hero">
+          <main className="ptm-main">
+            <section className="ptm-hero">
           <h1 className="ptm-hero-title">
             ENTRETIEN, <span className="ptm-highlight">ACCORD</span> & RESTAURATION DE PIANOS
           </h1>
@@ -59,30 +61,32 @@ const App = () => {
           <button className="ptm-secondary-cta">
             <span className="ptm-highlight">EN SAVOIR PLUS</span>
           </button>
-        </section>
-      </main>
+            </section>
+          </main>
 
-      <footer className="ptm-footer">© 2026 Piano Technique Montréal</footer>
+          <footer className="ptm-footer">© 2026 Piano Technique Montréal</footer>
 
-      {/* WIDGET CHAT FLOTTANT */}
-      {!isChatOpen ? (
-        <button
-          className="chat-badge"
-          onClick={openChat}
-          aria-label="Ouvrir le chat"
-        >
-          <span className="chat-badge-icon">🎹</span>
-        </button>
-      ) : (
-        <ChatWidget
-          isOpen={isChatOpen}
-          onClose={closeChat}
-          initialMessage={initialMessage}
-          inputValue={chatInput}
-          onInputChange={setChatInput}
-          onSend={handleChatSend}
-        />
-      )}
+          {/* WIDGET CHAT FLOTTANT */}
+          {!isChatOpen ? (
+            <button
+              className="chat-badge"
+              onClick={openChat}
+              aria-label="Ouvrir le chat"
+            >
+              <span className="chat-badge-icon">🎹</span>
+            </button>
+          ) : (
+            <ChatWidget
+              isOpen={isChatOpen}
+              onClose={closeChat}
+              initialMessage={initialMessage}
+              inputValue={chatInput}
+              onInputChange={setChatInput}
+              onSend={handleChatSend}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 };
