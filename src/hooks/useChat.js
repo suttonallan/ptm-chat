@@ -53,6 +53,9 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
         expertise_result: expertiseResult || null
       };
 
+      // Log avant l'appel API
+      console.log("Appel API:", API_CHAT, payload);
+
       // Appel API
       const response = await fetch(API_CHAT, {
         method: 'POST',
@@ -67,6 +70,10 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
       }
 
       const data = await response.json();
+      
+      // Log après la réponse
+      console.log("Réponse API:", data);
+
       const botReply = data.reply || "Désolé, je n'ai pas pu obtenir de réponse.";
 
       const botMessage = {
