@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChatWidget from './components/ChatWidget';
 import './App.css';
 
@@ -27,19 +27,37 @@ const App = () => {
     'Ou posez-moi vos questions sur nos services.'
   ].join('\n');
 
+  useEffect(() => {
+    document.body.classList.toggle('widget-mode', isWidgetMode);
+    document.documentElement.classList.toggle('widget-mode', isWidgetMode);
+    return () => {
+      document.body.classList.remove('widget-mode');
+      document.documentElement.classList.remove('widget-mode');
+    };
+  }, [isWidgetMode]);
+
   if (isWidgetMode) {
     return (
       <div className="app widget-only">
-        <div className="widget-only-container">
+        {!isChatOpen ? (
+          <button
+            className="chat-badge"
+            onClick={openChat}
+            aria-label="Ouvrir le chat"
+          >
+            <span className="chat-badge-icon">🎹</span>
+            <span className="chat-badge-tooltip">Besoin d'aide ? 💬</span>
+          </button>
+        ) : (
           <ChatWidget
-            isOpen
-            onClose={() => {}}
+            isOpen={isChatOpen}
+            onClose={closeChat}
             initialMessage={initialMessage}
             inputValue={chatInput}
             onInputChange={setChatInput}
             onSend={handleChatSend}
           />
-        </div>
+        )}
       </div>
     );
   }
@@ -92,6 +110,7 @@ const App = () => {
               aria-label="Ouvrir le chat"
             >
               <span className="chat-badge-icon">🎹</span>
+              <span className="chat-badge-tooltip">Besoin d'aide ? 💬</span>
             </button>
           ) : (
             <ChatWidget

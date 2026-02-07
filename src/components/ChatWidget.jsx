@@ -113,7 +113,8 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
           onClick={onClose}
           aria-label="Fermer le chat"
         >
-          ×
+          <span className="chat-close-desktop">✕ Fermer</span>
+          <span className="chat-close-mobile">← Retour au site</span>
         </button>
       </div>
 
