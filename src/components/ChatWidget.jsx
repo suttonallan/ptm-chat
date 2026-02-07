@@ -73,29 +73,7 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
       }
 
       const data = await response.json();
-
-      const verdictText = String(data?.verdict || '').toLowerCase();
-      const commentText = String(data?.commentaire_expert || '').toLowerCase();
-      const combinedText = `${verdictText} ${commentText}`.trim();
-      const invalidKeywords = [
-        'pas un piano',
-        'impossible d\'identifier',
-        'pas de piano',
-        'invalid_image',
-      ];
-      const isInvalidByText = invalidKeywords.some((keyword) => combinedText.includes(keyword));
-      const scoreValue = data?.score;
-      const isInvalidByScore = scoreValue === 0 || scoreValue === null || typeof scoreValue === 'undefined';
-
-      if (isInvalidByText || isInvalidByScore) {
-        addMessage({
-          id: Date.now() + 1,
-          role: 'bot',
-          text: "Hmm, je ne vois pas de piano sur cette photo ! 🤔 Envoyez-moi une photo de votre piano (de face, l'intérieur, ou le clavier) et je pourrai l'analyser.",
-          timestamp: new Date()
-        });
-        return;
-      }
+      console.log("Expertise API raw response:", JSON.stringify(data, null, 2));
 
       setExpertiseResult(data);
 
