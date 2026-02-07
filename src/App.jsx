@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import ChatWidget from './components/ChatWidget';
-import ExpertiseForm from './components/ExpertiseForm';
-import ExpertiseResult from './components/ExpertiseResult';
-import Disclaimer from './components/Disclaimer';
-import useExpertise from './hooks/useExpertise';
 import './App.css';
 
 const App = () => {
-  const { result, isLoading, isSuccess, isError, isIdle, error, reset, submitExpertise } = useExpertise();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState('');
 
@@ -19,64 +14,61 @@ const App = () => {
     setIsChatOpen(false);
   };
 
-  const handleChatSend = (text) => {
+  const handleChatSend = () => {
     setChatInput('');
   };
 
-  const getInitialChatMessage = () => {
-    if (result) {
-      return "J'ai analysé votre piano ! Avez-vous des questions sur le résultat ou nos services ?";
-    }
-    return "Bonjour ! Comment puis-je vous aider ?";
-  };
-
+  const initialMessage = [
+    'Bonjour ! 👋 Je suis l\'assistant de Piano Technique Montréal.',
+    '',
+    '💡 Envoyez-moi 1 à 3 photos de votre piano avec le bouton 📎 et obtenez une évaluation gratuite en quelques secondes !',
+    '',
+    'Ou posez-moi vos questions sur nos services.'
+  ].join('\n');
 
   return (
     <div className="app">
-      {/* SECTION PRINCIPALE */}
-      <main className="main-section">
-        <div className="main-container">
-          <h1 className="main-title">🎹 Expertise Piano par IA</h1>
-          <p className="main-subtitle">
-            Obtenez une évaluation préliminaire gratuite de votre piano
+      <header className="site-header">
+        <div className="site-header-inner">🎹 Piano Technique Montréal</div>
+      </header>
+
+      <main className="site-main">
+        <section className="hero">
+          <h1 className="hero-title">
+            Accordage et entretien de pianos à Montréal et partout dans le monde
+          </h1>
+          <p className="hero-subtitle">
+            Expertise gratuite par IA • Accordage • Réparation • Restauration • Inspection Zoom
           </p>
+        </section>
 
-          {isIdle && (
-            <ExpertiseForm 
-              onSubmit={submitExpertise}
-              isLoading={isLoading}
-              error={error}
-            />
-          )}
-
-          {isLoading && (
-            <div className="loading-state">
-              <div className="spinner"></div>
-              <p>Analyse en cours...</p>
-            </div>
-          )}
-
-          {isSuccess && result && (
-            <>
-              <ExpertiseResult result={result} />
-              <Disclaimer />
-            </>
-          )}
-
-          {isError && (
-            <div className="error-state">
-              <div className="error-icon">⚠️</div>
-              <p className="error-message-text">{error || 'Une erreur est survenue lors de l\'analyse'}</p>
-              <button
-                className="retry-button"
-                onClick={reset}
-              >
-                Réessayer
-              </button>
-            </div>
-          )}
-        </div>
+        <section className="services-grid">
+          <div className="service-card">
+            <div className="service-icon">🎼</div>
+            <h3 className="service-title">Accordage professionnel</h3>
+            <p className="service-text">Précision, stabilité et musicalité, adaptés à votre piano.</p>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">🔧</div>
+            <h3 className="service-title">Réparation & entretien</h3>
+            <p className="service-text">Interventions fiables pour préserver la mécanique et le toucher.</p>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">🪵</div>
+            <h3 className="service-title">Restauration</h3>
+            <p className="service-text">Remise à neuf complète avec respect du caractère d'origine.</p>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">📹</div>
+            <h3 className="service-title">Inspection Zoom</h3>
+            <p className="service-text">Évaluation à distance guidée par un technicien certifié.</p>
+          </div>
+        </section>
       </main>
+
+      <footer className="site-footer">
+        © 2026 Piano Technique Montréal
+      </footer>
 
       {/* WIDGET CHAT FLOTTANT */}
       {!isChatOpen ? (
@@ -91,11 +83,10 @@ const App = () => {
         <ChatWidget
           isOpen={isChatOpen}
           onClose={closeChat}
-          initialMessage={getInitialChatMessage()}
+          initialMessage={initialMessage}
           inputValue={chatInput}
           onInputChange={setChatInput}
           onSend={handleChatSend}
-          expertiseResult={result}
         />
       )}
     </div>

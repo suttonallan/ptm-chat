@@ -28,6 +28,10 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
     }
   }, [initialMessage, hasInitialized, messages.length]);
 
+  const addMessage = useCallback((message) => {
+    setMessages(prev => [...prev, message]);
+  }, []);
+
   const sendMessage = useCallback(async (text) => {
     if (!text.trim()) return;
 
@@ -39,7 +43,7 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    addMessage(userMessage);
     setIsTyping(true);
 
     try {
@@ -83,7 +87,7 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
         timestamp: new Date()
       };
 
-      setMessages(prev => [...prev, botMessage]);
+      addMessage(botMessage);
     } catch (error) {
       console.error('Error calling chat API:', error);
       const errorMessage = {
@@ -92,16 +96,17 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
         text: "Désolé, je n'ai pas pu répondre. Réessayez.",
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, errorMessage]);
+      addMessage(errorMessage);
     } finally {
       setIsTyping(false);
     }
-  }, [expertiseResult, getSessionId]);
+  }, [addMessage, expertiseResult, getSessionId]);
 
   return {
     messages,
     sendMessage,
-    isTyping
+    isTyping,
+    addMessage
   };
 };
 
