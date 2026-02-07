@@ -3,6 +3,7 @@ import ChatWidget from './components/ChatWidget';
 import './App.css';
 
 const App = () => {
+  const isWidgetMode = new URLSearchParams(window.location.search).get('widget') === 'true';
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState('');
 
@@ -25,6 +26,23 @@ const App = () => {
     '',
     'Ou posez-moi vos questions sur nos services.'
   ].join('\n');
+
+  if (isWidgetMode) {
+    return (
+      <div className="app widget-only">
+        <div className="widget-only-container">
+          <ChatWidget
+            isOpen
+            onClose={() => {}}
+            initialMessage={initialMessage}
+            inputValue={chatInput}
+            onInputChange={setChatInput}
+            onSend={handleChatSend}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app app-frame">
