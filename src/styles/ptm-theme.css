@@ -1,0 +1,25 @@
+/* PTM Theme Variables */
+
+:root {
+  /* Couleurs */
+  --ptm-beige: #E5DFD4; /* header, accents doux */
+  --ptm-beige-light: #F3EEE6; /* bulles bot */
+  --ptm-brown: #8C6A41; /* boutons, accents primaires */
+  --ptm-brown-dark: #7A5A33; /* hover */
+  --ptm-white: #FFFFFF;
+  --ptm-gray-light: #F7F7F7; /* bulles user */
+  --ptm-text: #000000;
+  --ptm-text-muted: #555555;
+  --ptm-border: rgba(0, 0, 0, 0.12);
+
+  /* Typographie */
+  --ptm-font-family: Arial, Helvetica, sans-serif;
+  --ptm-font-size-small: 12px;
+  --ptm-font-size-body: 14px; /* body/chat */
+  --ptm-font-size-title: 16px; /* titres */
+
+  /* Border radius */
+  --ptm-radius-container: 16px;
+  --ptm-radius-bubble: 12px;
+  --ptm-radius-input: 10px; /* inputs/boutons */
+}
