@@ -58,10 +58,7 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
         formData.append('images', file);
       });
       formData.append('email', '');
-      const safetyNote =
-        'IMPORTANT: Si l\'image ne montre PAS un piano, répondre uniquement : INVALID_IMAGE. Ne pas générer d\'analyse.';
-      const combinedNotes = [notes?.trim(), safetyNote].filter(Boolean).join('\n');
-      formData.append('notes', combinedNotes);
+      formData.append('notes', notes?.trim() || '');
 
       const response = await fetch(API_EXPERTISE, {
         method: 'POST',
