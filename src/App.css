@@ -186,20 +186,20 @@
   position: absolute;
   bottom: 24px;
   right: 24px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: rgba(140, 106, 65, 0.9);
-  opacity: 0.85;
+  padding: 10px 14px;
+  border-radius: 22px;
+  background-color: #2E7D4F;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   transition: all 0.3s ease;
   animation: pulse 2s ease-in-out infinite;
+  color: #fff;
 }
 
 .chat-badge:hover {
@@ -216,32 +216,39 @@
   }
 }
 
-.chat-badge-icon {
-  font-size: 22px;
-  color: var(--ptm-white);
-}
-
-.chat-badge-tooltip {
+.chat-badge::after {
+  content: '';
   position: absolute;
-  right: calc(100% + 12px);
-  background: #ffffff;
-  color: #000;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  white-space: nowrap;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  transform: translateY(4px);
-  animation: tooltipFadeIn 0.3s ease forwards;
-  animation-delay: 1.5s;
+  right: 12px;
+  bottom: -8px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 10px solid #2E7D4F;
 }
 
-@keyframes tooltipFadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.chat-badge-logo {
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chat-badge-logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.chat-badge-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
 }
 
 /* WIDGET CHAT - FENÊTRE */
@@ -387,6 +394,33 @@
   border: 1px solid var(--ptm-border);
 }
 
+.expertise-message {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.expertise-title {
+  font-weight: 600;
+}
+
+.expertise-score {
+  color: var(--ptm-brown);
+  font-weight: 600;
+}
+
+.expertise-verdict,
+.expertise-comment,
+.expertise-cta {
+  color: var(--ptm-text);
+}
+
+.expertise-disclaimer {
+  font-size: 12px;
+  color: var(--ptm-text-muted);
+  line-height: 1.4;
+}
+
 .chat-input-form {
   display: flex;
   gap: 8px;
@@ -478,8 +512,21 @@
   .chat-badge {
     bottom: 20px;
     right: 20px;
-    width: 50px;
-    height: 50px;
+    padding: 8px 10px;
+  }
+
+  .chat-badge-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  .chat-badge-logo img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .chat-badge-text {
+    font-size: 12px;
   }
 
   .chat-close-desktop {
@@ -493,12 +540,7 @@
 
 @media (min-width: 768px) {
   .chat-badge {
-    width: 72px;
-    height: 72px;
-  }
-
-  .chat-badge-icon {
-    font-size: 26px;
+    padding: 12px 16px;
   }
 }
 

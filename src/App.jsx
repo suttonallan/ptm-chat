@@ -45,8 +45,10 @@ const App = () => {
             onClick={openChat}
             aria-label="Ouvrir le chat"
           >
-            <span className="chat-badge-icon">🎹</span>
-            <span className="chat-badge-tooltip">Besoin d'aide ? 💬</span>
+            <span className="chat-badge-logo">
+              <img src="/logo-ptm.png" alt="PTM" />
+            </span>
+            <span className="chat-badge-text">📸 Évaluation gratuite !</span>
           </button>
         ) : (
           <ChatWidget
@@ -109,8 +111,10 @@ const App = () => {
               onClick={openChat}
               aria-label="Ouvrir le chat"
             >
-              <span className="chat-badge-icon">🎹</span>
-              <span className="chat-badge-tooltip">Besoin d'aide ? 💬</span>
+              <span className="chat-badge-logo">
+                <img src="/logo-ptm.png" alt="PTM" />
+              </span>
+              <span className="chat-badge-text">📸 Évaluation gratuite !</span>
             </button>
           ) : (
             <ChatWidget

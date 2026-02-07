@@ -67,22 +67,15 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
       const data = await response.json();
       setExpertiseResult(data);
 
-      const formattedResult = [
-        '📊 Évaluation de votre piano :',
-        `Score : ${data.score}/100`,
-        data.verdict,
-        '',
-        `💬 ${data.commentaire_expert}`,
-        '',
-        '⚠️ Cette évaluation est générée par IA. Un technicien certifié pourra valider ces observations.',
-        '',
-        'Souhaitez-vous en savoir plus sur nos services ou prendre rendez-vous ?'
-      ].join('\n');
-
       addMessage({
         id: Date.now() + 1,
         role: 'bot',
-        text: formattedResult,
+        type: 'expertise',
+        expertise: {
+          score: data.score,
+          verdict: data.verdict,
+          commentaire_expert: data.commentaire_expert
+        },
         timestamp: new Date()
       });
     } catch (error) {
