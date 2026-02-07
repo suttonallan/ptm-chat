@@ -71,6 +71,18 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
 
       const data = await response.json();
       console.log("Expertise API raw response:", JSON.stringify(data, null, 2));
+      console.log("Response type:", typeof data, data);
+
+      if (typeof data === 'string') {
+        const messageText = `${data}\n\n⚠️ Cette évaluation est générée par intelligence artificielle à partir de photos. Elle ne remplace pas une inspection en personne par un technicien certifié.`;
+        addMessage({
+          id: Date.now() + 1,
+          role: 'bot',
+          text: messageText,
+          timestamp: new Date()
+        });
+        return;
+      }
 
       setExpertiseResult(data);
 
