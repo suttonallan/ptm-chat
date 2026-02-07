@@ -58,7 +58,10 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
         formData.append('images', file);
       });
       formData.append('email', '');
-      formData.append('notes', notes || '');
+      const safetyNote =
+        'IMPORTANT: Si l\'image ne montre PAS un piano, répondre uniquement : INVALID_IMAGE. Ne pas générer d\'analyse.';
+      const combinedNotes = [notes?.trim(), safetyNote].filter(Boolean).join('\n');
+      formData.append('notes', combinedNotes);
 
       const response = await fetch(API_EXPERTISE, {
         method: 'POST',
@@ -70,6 +73,30 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
       }
 
       const data = await response.json();
+
+      const verdictText = String(data?.verdict || '').toLowerCase();
+      const commentText = String(data?.commentaire_expert || '').toLowerCase();
+      const combinedText = `${verdictText} ${commentText}`.trim();
+      const invalidKeywords = [
+        'pas un piano',
+        'impossible d\'identifier',
+        'pas de piano',
+        'invalid_image',
+      ];
+      const isInvalidByText = invalidKeywords.some((keyword) => combinedText.includes(keyword));
+      const scoreValue = data?.score;
+      const isInvalidByScore = scoreValue === 0 || scoreValue === null || typeof scoreValue === 'undefined';
+
+      if (isInvalidByText || isInvalidByScore) {
+        addMessage({
+          id: Date.now() + 1,
+          role: 'bot',
+          text: "Hmm, je ne vois pas de piano sur cette photo ! 🤔 Envoyez-moi une photo de votre piano (de face, l'intérieur, ou le clavier) et je pourrai l'analyser.",
+          timestamp: new Date()
+        });
+        return;
+      }
+
       setExpertiseResult(data);
 
       addMessage({
