@@ -1,9 +1,19 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { API_CHAT } from '../config/api';
 
-const useChat = (initialMessage = null) => {
+const useChat = (initialMessage = null, expertiseResult = null) => {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [hasInitialized, setHasInitialized] = useState(false);
+  const sessionIdRef = useRef(null);
+
+  // Générer le session_id une seule fois au premier message
+  const getSessionId = useCallback(() => {
+    if (!sessionIdRef.current) {
+      sessionIdRef.current = crypto.randomUUID();
+    }
+    return sessionIdRef.current;
+  }, []);
 
   // Initialiser le message initial quand il est fourni
   useEffect(() => {
@@ -18,25 +28,7 @@ const useChat = (initialMessage = null) => {
     }
   }, [initialMessage, hasInitialized, messages.length]);
 
-  const generateBotResponse = (userText) => {
-    const text = userText.toLowerCase();
-    
-    if (text.includes('prix') || text.includes('coût') || text.includes('combien') || text.includes('accord')) {
-      return "Le mot « accordage » peut signifier différentes choses selon l'état de votre piano — ça peut aller d'un simple accord de maintien à une remise à niveau complète. Nos services vont de 250$ à 2500$ et plus, selon vos besoins. C'est exactement pour ça qu'on offre l'expertise : mieux comprendre votre piano pour vous proposer le bon service !";
-    }
-    
-    if (text.includes('rendez-vous') || text.includes('rv') || text.includes('disponible')) {
-      return "Je peux vous proposer une inspection par Zoom ou en personne à Montréal. Quel format vous convient ?";
-    }
-    
-    if (text.includes('zoom')) {
-      return "Parfait ! Nos inspections Zoom durent environ 30 minutes. Voulez-vous choisir un créneau ?";
-    }
-    
-    return "Merci pour votre question ! Un membre de notre équipe pourra vous répondre en détail. Souhaitez-vous être contacté par email ?";
-  };
-
-  const sendMessage = useCallback((text) => {
+  const sendMessage = useCallback(async (text) => {
     if (!text.trim()) return;
 
     // Ajouter le message utilisateur
@@ -48,23 +40,56 @@ const useChat = (initialMessage = null) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
-
-    // Simuler la réponse du bot après 500ms
     setIsTyping(true);
-    
-    setTimeout(() => {
-      const botResponse = generateBotResponse(text);
+
+    try {
+      // Générer session_id au premier message
+      const sessionId = getSessionId();
+
+      // Préparer le payload
+      const payload = {
+        message: text.trim(),
+        session_id: sessionId,
+        expertise_result: expertiseResult || null
+      };
+
+      // Appel API
+      const response = await fetch(API_CHAT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const botReply = data.reply || "Désolé, je n'ai pas pu obtenir de réponse.";
+
       const botMessage = {
         id: Date.now() + 1,
         role: 'bot',
-        text: botResponse,
+        text: botReply,
         timestamp: new Date()
       };
-      
-      setIsTyping(false);
+
       setMessages(prev => [...prev, botMessage]);
-    }, 500);
-  }, []);
+    } catch (error) {
+      console.error('Error calling chat API:', error);
+      const errorMessage = {
+        id: Date.now() + 1,
+        role: 'bot',
+        text: "Désolé, je n'ai pas pu répondre. Réessayez.",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
+  }, [expertiseResult, getSessionId]);
 
   return {
     messages,

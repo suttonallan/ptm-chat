@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import ChatMessage from './ChatMessage';
 import useChat from '../hooks/useChat';
 
-const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange, onSend }) => {
-  const { messages, sendMessage, isTyping } = useChat(initialMessage);
+const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange, onSend, expertiseResult }) => {
+  const { messages, sendMessage, isTyping } = useChat(initialMessage, expertiseResult);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 

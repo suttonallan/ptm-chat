@@ -95,6 +95,7 @@ const App = () => {
           inputValue={chatInput}
           onInputChange={setChatInput}
           onSend={handleChatSend}
+          expertiseResult={result}
         />
       )}
     </div>
