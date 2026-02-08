@@ -5,6 +5,7 @@ import './App.css';
 const App = () => {
   const isWidgetMode = new URLSearchParams(window.location.search).get('widget') === 'true';
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isBadgeMinimized, setIsBadgeMinimized] = useState(false);
   const [chatInput, setChatInput] = useState('');
 
   const openChat = () => {
@@ -40,16 +41,40 @@ const App = () => {
     return (
       <div className="app widget-only">
         {!isChatOpen ? (
-          <button
-            className="chat-badge"
-            onClick={openChat}
-            aria-label="Ouvrir le chat"
-          >
-            <span className="chat-badge-logo">
-              <img src="/logo-ptm.png" alt="PTM" />
-            </span>
-            <span className="chat-badge-text">📸 Évaluation gratuite !</span>
-          </button>
+          <div className="chat-badge-container">
+            {!isBadgeMinimized ? (
+              <button
+                className="chat-badge"
+                onClick={openChat}
+                aria-label="Ouvrir le chat"
+              >
+                <span className="chat-badge-logo">
+                  <img src="/logo-ptm.png" alt="PTM" />
+                </span>
+                <span className="chat-badge-text">📸 Évaluation gratuite !</span>
+                <button
+                  type="button"
+                  className="chat-badge-close"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setIsBadgeMinimized(true);
+                  }}
+                  aria-label="Masquer le badge"
+                >
+                  ×
+                </button>
+              </button>
+            ) : (
+              <button
+                className="chat-badge-mini"
+                onClick={openChat}
+                onMouseEnter={() => setIsBadgeMinimized(false)}
+                aria-label="Réafficher le chat"
+              >
+                💬
+              </button>
+            )}
+          </div>
         ) : (
           <ChatWidget
             isOpen={isChatOpen}
@@ -106,16 +131,40 @@ const App = () => {
 
           {/* WIDGET CHAT FLOTTANT */}
           {!isChatOpen ? (
-            <button
-              className="chat-badge"
-              onClick={openChat}
-              aria-label="Ouvrir le chat"
-            >
-              <span className="chat-badge-logo">
-                <img src="/logo-ptm.png" alt="PTM" />
-              </span>
-              <span className="chat-badge-text">📸 Évaluation gratuite !</span>
-            </button>
+            <div className="chat-badge-container">
+              {!isBadgeMinimized ? (
+                <button
+                  className="chat-badge"
+                  onClick={openChat}
+                  aria-label="Ouvrir le chat"
+                >
+                  <span className="chat-badge-logo">
+                    <img src="/logo-ptm.png" alt="PTM" />
+                  </span>
+                  <span className="chat-badge-text">📸 Évaluation gratuite !</span>
+                  <button
+                    type="button"
+                    className="chat-badge-close"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setIsBadgeMinimized(true);
+                    }}
+                    aria-label="Masquer le badge"
+                  >
+                    ×
+                  </button>
+                </button>
+              ) : (
+                <button
+                  className="chat-badge-mini"
+                  onClick={openChat}
+                  onMouseEnter={() => setIsBadgeMinimized(false)}
+                  aria-label="Réafficher le chat"
+                >
+                  💬
+                </button>
+              )}
+            </div>
           ) : (
             <ChatWidget
               isOpen={isChatOpen}

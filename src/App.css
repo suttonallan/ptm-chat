@@ -183,9 +183,7 @@
 
 /* WIDGET CHAT - BADGE */
 .chat-badge {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
+  position: relative;
   padding: 10px 14px;
   border-radius: 22px;
   background-color: #2E7D4F;
@@ -200,6 +198,13 @@
   transition: all 0.3s ease;
   animation: pulse 2s ease-in-out infinite;
   color: #fff;
+}
+
+.chat-badge-container {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
 }
 
 .chat-badge:hover {
@@ -226,6 +231,44 @@
   border-left: 10px solid transparent;
   border-right: 0 solid transparent;
   border-top: 10px solid #2E7D4F;
+}
+
+.chat-badge-close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.chat-badge-close:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.chat-badge-mini {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #2E7D4F;
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .chat-badge-logo {
@@ -509,9 +552,12 @@
     animation: chatSlideUp 0.3s ease-out;
   }
 
-  .chat-badge {
+  .chat-badge-container {
     bottom: 20px;
     right: 20px;
+  }
+
+  .chat-badge {
     padding: 8px 10px;
   }
 
