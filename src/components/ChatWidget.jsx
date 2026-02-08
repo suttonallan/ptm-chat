@@ -7,6 +7,7 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [expertiseResult, setExpertiseResult] = useState(null);
   const [pendingPhotos, setPendingPhotos] = useState([]);
+  const [pendingPhotoPreviews, setPendingPhotoPreviews] = useState([]);
   const [awaitingContext, setAwaitingContext] = useState(false);
   const [textMessageCount, setTextMessageCount] = useState(0);
   const fileInputRef = useRef(null);
