@@ -73,13 +73,45 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
       console.log("Expertise API raw response:", JSON.stringify(data, null, 2));
       console.log("Response type:", typeof data, data);
 
-      // Si la réponse est un string, afficher le texte directement
-      const responseText = typeof data === 'string' ? data : (data.result || data.text || JSON.stringify(data));
+      if (typeof data === 'string') {
+        addMessage({
+          id: Date.now() + 1,
+          role: 'bot',
+          text: `${data}\n\n⚠️ Cette évaluation est générée par intelligence artificielle à partir de photos. Elle ne remplace pas une inspection en personne par un technicien certifié.`,
+          timestamp: new Date()
+        });
+        return;
+      }
+
+      const score = data.score_global ?? 'N/A';
+      const marque = data.marque ?? 'Marque inconnue';
+      const historiqueMarque = data.historique_marque ?? 'Historique non disponible';
+      const ageEstime = data.age_estime ?? 'Non estimé';
+      const verdict = data.verdict ?? 'Verdict non disponible';
+      const commentaire = data.commentaire_expert ?? 'Commentaire non disponible';
+      const valeurSansTravaux = data.valeur_marche_estimee?.sans_travaux ?? 'N/A';
+      const valeurAvecTravaux = data.valeur_marche_estimee?.avec_travaux ?? 'N/A';
+
+      const responseText = [
+        '📊 Évaluation de votre piano :',
+        '',
+        `🎹 ${marque} — ${historiqueMarque}`,
+        `📅 Âge estimé : ${ageEstime}`,
+        '',
+        `Score : ${score}/10`,
+        `Verdict : ${verdict}`,
+        '',
+        `💬 ${commentaire}`,
+        '',
+        `💰 Valeur estimée : ${valeurSansTravaux} (en l'état) → ${valeurAvecTravaux} (après travaux)`,
+        '',
+        "⚠️ Cette évaluation est générée par intelligence artificielle à partir de photos. Elle ne remplace pas une inspection en personne par un technicien certifié."
+      ].join('\n');
 
       addMessage({
         id: Date.now() + 1,
         role: 'bot',
-        text: responseText + "\n\n⚠️ Cette évaluation est générée par intelligence artificielle à partir de photos. Elle ne remplace pas une inspection en personne par un technicien certifié.",
+        text: responseText,
         timestamp: new Date()
       });
     } catch (error) {
