@@ -202,7 +202,7 @@
 
 .chat-badge-container {
   position: absolute;
-  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  bottom: 40px;
   right: 24px;
   z-index: 1000;
 }
@@ -553,7 +553,7 @@
   }
 
   .chat-badge-container {
-    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    bottom: 70px;
     right: 16px;
   }
 
