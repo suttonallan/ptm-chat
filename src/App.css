@@ -13,7 +13,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: var(--real-vh, 100%);
   pointer-events: none;
 }
 
@@ -553,16 +553,19 @@
   }
 
   .chat-window {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
-    height: 100vh;
-    bottom: 0;
-    right: 0;
+    height: var(--real-vh, 100vh);
+    bottom: auto;
+    right: auto;
     border-radius: 0;
     animation: chatSlideUp 0.3s ease-out;
   }
 
   .chat-badge-container {
-    bottom: 20px;
+    bottom: 80px;
     right: 16px;
   }
 

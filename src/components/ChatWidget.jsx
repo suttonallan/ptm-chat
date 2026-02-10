@@ -22,6 +22,22 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
     }
   }, [messages, isTyping]);
 
+  // Fix iOS Safari: ajuster la hauteur quand le clavier ou la barre de nav change
+  const inputFieldRef = useRef(null);
+  useEffect(() => {
+    const setVH = () => {
+      const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      document.documentElement.style.setProperty('--real-vh', `${vh}px`);
+    };
+    setVH();
+    window.visualViewport?.addEventListener('resize', setVH);
+    window.addEventListener('resize', setVH);
+    return () => {
+      window.visualViewport?.removeEventListener('resize', setVH);
+      window.removeEventListener('resize', setVH);
+    };
+  }, []);
+
 
   const handleSend = (e) => {
     e.preventDefault();
