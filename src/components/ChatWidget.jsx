@@ -243,6 +243,7 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
           className="chat-input"
           value={inputValue}
           onChange={(e) => onInputChange(e.target.value)}
+          onTouchStart={(e) => e.target.focus()}
           placeholder="Tapez votre message..."
         />
         <button type="submit" className="chat-send-button">
