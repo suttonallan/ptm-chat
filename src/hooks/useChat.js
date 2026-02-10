@@ -1,6 +1,13 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { API_CHAT } from '../config/api';
 
+// Détection simple anglais vs français
+const EN_WORDS = /\b(the|is|are|how|much|what|when|where|do|does|can|could|would|my|your|this|that|have|has|for|with|about|piano|tuning|need|want|please)\b/i;
+function isEnglish(text) {
+  const matches = (text.match(EN_WORDS) || []).length;
+  return matches >= 2;
+}
+
 const useChat = (initialMessage = null, expertiseResult = null) => {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -60,14 +67,20 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
       // Log avant l'appel API
       console.log("Appel API:", API_CHAT, payload);
 
-      // Appel API
+      // Appel API (timeout 45s pour laisser le temps au cold start)
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 45000);
+
       const response = await fetch(API_CHAT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: controller.signal
       });
+
+      clearTimeout(timeout);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -78,7 +91,9 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
       // Log après la réponse
       console.log("Réponse API:", data);
 
-      const botReply = data.reply || "Désolé, je n'ai pas pu obtenir de réponse.";
+      const botReply = data.reply || (isEnglish(text)
+        ? "Sorry, I couldn't get a response."
+        : "Désolé, je n'ai pas pu obtenir de réponse.");
 
       const botMessage = {
         id: Date.now() + 1,
@@ -90,10 +105,14 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
       addMessage(botMessage);
     } catch (error) {
       console.error('Error calling chat API:', error);
+      const isTimeout = error.name === 'AbortError';
+      const errText = isEnglish(text)
+        ? (isTimeout ? "Sorry, the server is taking too long. Please try again." : "Sorry, I couldn't respond. Please try again.")
+        : (isTimeout ? "Désolé, le serveur met trop de temps. Réessayez." : "Désolé, je n'ai pas pu répondre. Réessayez.");
       const errorMessage = {
         id: Date.now() + 1,
         role: 'bot',
-        text: "Désolé, je n'ai pas pu répondre. Réessayez.",
+        text: errText,
         timestamp: new Date()
       };
       addMessage(errorMessage);
