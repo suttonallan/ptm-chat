@@ -10,10 +10,14 @@ const App = () => {
 
   const openChat = () => {
     setIsChatOpen(true);
+    // Dire au parent (WordPress) d'agrandir l'iframe
+    if (isWidgetMode) window.parent.postMessage('ptm-chat-open', '*');
   };
 
   const closeChat = () => {
     setIsChatOpen(false);
+    // Dire au parent (WordPress) de réduire l'iframe
+    if (isWidgetMode) window.parent.postMessage('ptm-chat-close', '*');
   };
 
   const handleChatSend = () => {

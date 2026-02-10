@@ -9,25 +9,26 @@
 
 .widget-only {
   background: transparent;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: var(--real-vh, 100%);
-  pointer-events: none;
+  height: 100%;
 }
 
 .widget-only .chat-badge-container {
-  pointer-events: auto;
-}
-
-.widget-only .chat-badge {
-  pointer-events: auto;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
 }
 
 .widget-only .chat-window {
-  position: fixed;
-  pointer-events: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .app-frame {
@@ -209,11 +210,10 @@
 }
 
 .chat-badge-container {
-  position: fixed;
+  position: absolute;
   bottom: 24px;
   right: 20px;
   z-index: 1000;
-  pointer-events: auto;
 }
 
 .chat-badge:hover {
@@ -553,20 +553,17 @@
   }
 
   .chat-window {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100vw;
-    height: var(--real-vh, 100vh);
-    bottom: auto;
-    right: auto;
+    height: 100%;
+    bottom: 0;
+    right: 0;
     border-radius: 0;
     animation: chatSlideUp 0.3s ease-out;
   }
 
   .chat-badge-container {
-    bottom: 80px;
-    right: 16px;
+    bottom: 8px;
+    right: 8px;
   }
 
   .chat-badge {
