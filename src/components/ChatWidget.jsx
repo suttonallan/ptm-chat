@@ -194,8 +194,8 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
         id: Date.now() + 1,
         role: 'bot',
         text: en
-          ? "Thanks for the photos! 📸 Before I run the analysis, it would help to know a bit more:\n\n• What brand is your piano?\n• When was it last tuned?\n• What concerns do you have?"
-          : "Merci pour les photos ! 📸 Avant que je lance l'analyse, ça m'aiderait d'en savoir un peu plus :\n\n• Quelle est la marque de votre piano ?\n• Quand a-t-il été accordé pour la dernière fois ?\n• Qu'est-ce qui vous préoccupe ?",
+          ? "Thanks for the photos! 📸 Before I run the analysis, it would help to know a bit more:\n\n• When was it last tuned?\n• What concerns do you have?\n\nFor a better evaluation, a full view of the piano and a shot of the inside (brand, serial numbers, hammers) would be ideal!"
+          : "Merci pour les photos ! 📸 Avant que je lance l'analyse, ça m'aiderait d'en savoir un peu plus :\n\n• Quand a-t-il été accordé pour la dernière fois ?\n• Qu'est-ce qui vous préoccupe ?\n\nPour une meilleure évaluation, une vue d'ensemble du piano et une photo de l'intérieur (marque, numéros de série, marteaux) seraient idéales !",
         timestamp: new Date()
       });
     }
