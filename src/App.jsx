@@ -25,11 +25,14 @@ const App = () => {
   };
 
   const initialMessage = [
-    'Bonjour ! 👋 Je suis l\'assistant de Piano Technique Montréal.',
+    'Bonjour ! Hello ! 👋',
+    'Je suis l\'assistant de Piano Technique Montréal. I\'m the Piano Technique Montréal assistant.',
     '',
-    '💡 Envoyez-moi 1 à 3 photos de votre piano avec le bouton 📎 et obtenez une évaluation gratuite en quelques secondes !',
+    '💡 Envoyez-moi des photos de votre piano avec 📎 pour une évaluation gratuite !',
+    'Send me photos of your piano with 📎 for a free evaluation!',
     '',
-    'Ou posez-moi vos questions sur nos services.'
+    '🎹 Vous cherchez un piano usagé ? Essayez notre service Piano Concierge !',
+    'Looking for a used piano? Try our Piano Concierge service!'
   ].join('\n');
 
   useEffect(() => {
