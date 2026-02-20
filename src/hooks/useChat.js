@@ -125,7 +125,8 @@ const useChat = (initialMessage = null, expertiseResult = null) => {
     messages,
     sendMessage,
     isTyping,
-    addMessage
+    addMessage,
+    getSessionId
   };
 };
 
