@@ -4,7 +4,7 @@ import useChat from '../hooks/useChat';
 import { API_CHAT_UPLOAD } from '../config/api';
 
 // Détection simple anglais vs français (même logique que useChat)
-const EN_WORDS = /\b(the|is|are|how|much|what|when|where|do|does|can|could|would|my|your|this|that|have|has|for|with|about|piano|tuning|need|want|please|yes|no|hi|hello|thanks|thank)\b/i;
+const EN_WORDS = /\b(the|is|are|how|much|what|when|where|does|can|could|would|my|your|this|that|have|has|for|with|about|need|want|please|yes|hello|thanks|thank)\b/gi;
 function isConversationEnglish(messages) {
   // Regarde les messages user pour déterminer la langue
   const userTexts = messages
@@ -138,8 +138,8 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
         id: Date.now() + 1,
         role: 'bot',
         text: en
-          ? "Thanks for the photos! 📸 Before I run the analysis, it would help to know a bit more:\n\n• When was it last tuned?\n• What concerns do you have?\n\nFor a better evaluation, a full view of the piano and a shot of the inside (brand, serial numbers, hammers) would be ideal!"
-          : "Merci pour les photos ! 📸 Avant que je lance l'analyse, ça m'aiderait d'en savoir un peu plus :\n\n• Quand a-t-il été accordé pour la dernière fois ?\n• Qu'est-ce qui vous préoccupe ?\n\nPour une meilleure évaluation, une vue d'ensemble du piano et une photo de l'intérieur (marque, numéros de série, marteaux) seraient idéales !",
+          ? "Thanks for the photos! 📸 Before I run the analysis, it would help to know a bit more:\n\n• When was it last tuned?\n• What concerns do you have?\n\nIf you have additional photos (inside view, brand name, serial number), feel free to send them too!"
+          : "Merci pour les photos ! 📸 Avant que je lance l'analyse, ça m'aiderait d'en savoir un peu plus :\n\n• Quand a-t-il été accordé pour la dernière fois ?\n• Qu'est-ce qui vous préoccupe ?\n\nSi vous avez d'autres photos (intérieur, marque, numéro de série), n'hésitez pas à les envoyer aussi !",
         timestamp: new Date()
       });
     }

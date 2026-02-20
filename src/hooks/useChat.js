@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { API_CHAT } from '../config/api';
 
 // Détection simple anglais vs français
-const EN_WORDS = /\b(the|is|are|how|much|what|when|where|do|does|can|could|would|my|your|this|that|have|has|for|with|about|piano|tuning|need|want|please)\b/i;
+const EN_WORDS = /\b(the|is|are|how|much|what|when|where|does|can|could|would|my|your|this|that|have|has|for|with|about|need|want|please)\b/gi;
 function isEnglish(text) {
   const matches = (text.match(EN_WORDS) || []).length;
   return matches >= 2;
