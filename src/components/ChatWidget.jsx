@@ -138,8 +138,8 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
         id: Date.now() + 1,
         role: 'bot',
         text: en
-          ? "Thanks for the photos! 📸 Before I run the analysis, it would help to know a bit more:\n\n• When was it last tuned?\n• What concerns do you have?\n\nIf you have additional photos (inside view, brand name, serial number), feel free to send them too!"
-          : "Merci pour les photos ! 📸 Avant que je lance l'analyse, ça m'aiderait d'en savoir un peu plus :\n\n• Quand a-t-il été accordé pour la dernière fois ?\n• Qu'est-ce qui vous préoccupe ?\n\nSi vous avez d'autres photos (intérieur, marque, numéro de série), n'hésitez pas à les envoyer aussi !",
+          ? "Thanks for the photos! 📸 Before I run the analysis, it would help to know a bit more:\n\n• When was it last tuned?\n• What concerns do you have?"
+          : "Merci pour les photos ! 📸 Avant que je lance l'analyse, ça m'aiderait d'en savoir un peu plus :\n\n• Quand a-t-il été accordé pour la dernière fois ?\n• Qu'est-ce qui vous préoccupe ?",
         timestamp: new Date()
       });
     }
