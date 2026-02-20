@@ -30,9 +30,6 @@ const App = () => {
     '',
     '💡 Envoyez-moi des photos de votre piano avec 📎 pour une évaluation gratuite !',
     'Send me photos of your piano with 📎 for a free evaluation!',
-    '',
-    '🎹 Vous cherchez un piano usagé ? Essayez notre service Piano Concierge !',
-    'Looking for a used piano? Try our Piano Concierge service!'
   ].join('\n');
 
   useEffect(() => {
