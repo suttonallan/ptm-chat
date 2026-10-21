@@ -25,11 +25,12 @@ const App = () => {
   };
 
   const initialMessage = [
-    'Bonjour ! Hello ! 👋',
-    'Je suis l\'assistant de Piano Technique Montréal. I\'m the Piano Technique Montréal assistant.',
+    'Bonjour ! Hello !',
+    'Je suis l\'assistant IA de Piano Technique Montréal. Envoyez-moi une à trois photos de votre piano avec 📎 pour un premier avis, ou posez-moi votre question.',
+    'I\'m the Piano Technique Montréal AI assistant. Send me 1 to 3 photos of your piano with 📎 for a first opinion, or ask me anything.',
     '',
-    '💡 Envoyez-moi des photos de votre piano avec 📎 pour une évaluation gratuite !',
-    'Send me photos of your piano with 📎 for a free evaluation!',
+    'Vous préférez parler à une personne ? 514 344-8008 ou info@piano-tek.com',
+    'Prefer a real person? 514 344-8008 or info@piano-tek.com',
   ].join('\n');
 
   useEffect(() => {
@@ -55,7 +56,7 @@ const App = () => {
                 <span className="chat-badge-logo">
                   <img src="/logo-ptm.png" alt="PTM" />
                 </span>
-                <span className="chat-badge-text">📸 Évaluation gratuite !</span>
+                <span className="chat-badge-text">📸 Premier avis sur votre piano</span>
                 <button
                   type="button"
                   className="chat-badge-close"
@@ -145,7 +146,7 @@ const App = () => {
                   <span className="chat-badge-logo">
                     <img src="/logo-ptm.png" alt="PTM" />
                   </span>
-                  <span className="chat-badge-text">📸 Évaluation gratuite !</span>
+                  <span className="chat-badge-text">📸 Premier avis sur votre piano</span>
                   <button
                     type="button"
                     className="chat-badge-close"
