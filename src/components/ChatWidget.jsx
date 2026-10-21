@@ -16,13 +16,32 @@ function isConversationEnglish(messages) {
   return matches >= 2;
 }
 
+// Réduit la photo (~1600 px, JPEG) avant l'envoi : passe sous la limite de 5 Mo de l'IA
+// et retire les métadonnées (dont la position GPS). En cas d'échec, garde l'original.
+async function preparerPhoto(file) {
+  try {
+    const bitmap = await createImageBitmap(file);
+    const max = 1600;
+    const ratio = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * ratio);
+    canvas.height = Math.round(bitmap.height * ratio);
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise((res) => canvas.toBlob(res, 'image/jpeg', 0.85));
+    if (!blob) return file;
+    return new File([blob], (file.name || 'photo').replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' });
+  } catch {
+    return file;
+  }
+}
+
+const MAX_PHOTOS = 3;
+
 const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange, onSend }) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [expertiseResult, setExpertiseResult] = useState(null);
   const [pendingPhotos, setPendingPhotos] = useState([]);
   const [pendingPhotoPreviews, setPendingPhotoPreviews] = useState([]);
-  const [awaitingContext, setAwaitingContext] = useState(false);
-  const [textMessageCount, setTextMessageCount] = useState(0);
   const fileInputRef = useRef(null);
   const { messages, sendMessage, isTyping, addMessage, getSessionId } = useChat(initialMessage, expertiseResult);
   const messagesEndRef = useRef(null);
@@ -54,29 +73,27 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
 
   const handleSend = (e) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
-
     const trimmed = inputValue.trim();
-    setTextMessageCount((prev) => prev + 1);
 
-    if (awaitingContext && pendingPhotos.length > 0) {
-      addMessage({
-        id: Date.now(),
-        role: 'user',
-        text: trimmed,
-        timestamp: new Date()
-      });
-
+    // Photos en attente : on les envoie toutes ensemble, avec le texte s'il y en a un.
+    if (pendingPhotos.length > 0) {
+      addMessage({ id: Date.now(), role: 'user', type: 'images', images: pendingPhotoPreviews, timestamp: new Date() });
+      if (trimmed) addMessage({ id: Date.now() + 1, role: 'user', text: trimmed, timestamp: new Date() });
       runExpertise(pendingPhotos, trimmed);
       setPendingPhotos([]);
       setPendingPhotoPreviews([]);
-      setAwaitingContext(false);
       onSend(inputValue);
       return;
     }
 
+    if (!trimmed) return;
     sendMessage(trimmed);
     onSend(inputValue);
+  };
+
+  const retirerPhoto = (i) => {
+    setPendingPhotos((p) => p.filter((_, j) => j !== i));
+    setPendingPhotoPreviews((p) => p.filter((_, j) => j !== i));
   };
 
   const runExpertise = async (files, notes = '') => {
@@ -111,42 +128,13 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
   };
 
   const handleFileSelect = async (files, resetInput) => {
-    const imageFiles = Array.from(files || []).filter(file => file.type.startsWith('image/'));
-    if (imageFiles.length === 0) return;
-
-    const limitedFiles = imageFiles.slice(0, 3);
-    const imagePreviews = limitedFiles.map(file => ({
-      url: URL.createObjectURL(file),
-      name: file.name
-    }));
-
-    addMessage({
-      id: Date.now(),
-      role: 'user',
-      type: 'images',
-      images: imagePreviews,
-      timestamp: new Date()
-    });
-
-    if (textMessageCount >= 2) {
-      runExpertise(limitedFiles, '');
-    } else {
-      setPendingPhotos(limitedFiles);
-      setAwaitingContext(true);
-      const en = isConversationEnglish(messages);
-      addMessage({
-        id: Date.now() + 1,
-        role: 'bot',
-        text: en
-          ? "Thanks for the photos! 📸 Before I run the analysis, it would help to know a bit more:\n\n• When was it last tuned?\n• What concerns do you have?"
-          : "Merci pour les photos ! 📸 Avant que je lance l'analyse, ça m'aiderait d'en savoir un peu plus :\n\n• Quand a-t-il été accordé pour la dernière fois ?\n• Qu'est-ce qui vous préoccupe ?",
-        timestamp: new Date()
-      });
-    }
-
-    if (resetInput) {
-      resetInput();
-    }
+    const choisies = Array.from(files || []).filter(file => file.type.startsWith('image/'));
+    if (resetInput) resetInput();
+    const place = MAX_PHOTOS - pendingPhotos.length;
+    if (choisies.length === 0 || place <= 0) return;
+    const pretes = await Promise.all(choisies.slice(0, place).map(preparerPhoto));
+    setPendingPhotos((p) => [...p, ...pretes].slice(0, MAX_PHOTOS));
+    setPendingPhotoPreviews((p) => [...p, ...pretes.map((f) => ({ url: URL.createObjectURL(f), name: f.name }))].slice(0, MAX_PHOTOS));
   };
 
   return (
@@ -186,6 +174,29 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
         )}
         <div ref={messagesEndRef} />
       </div>
+
+      {pendingPhotoPreviews.length > 0 && (
+        <div className="chat-photo-tray">
+          <div className="chat-photo-tray-thumbs">
+            {pendingPhotoPreviews.map((p, i) => (
+              <div className="chat-photo-thumb" key={p.url}>
+                <img src={p.url} alt="" />
+                <button type="button" onClick={() => retirerPhoto(i)} aria-label={isConversationEnglish(messages) ? 'Remove photo' : 'Retirer la photo'}>×</button>
+              </div>
+            ))}
+            {pendingPhotoPreviews.length < MAX_PHOTOS && (
+              <button type="button" className="chat-photo-add" onClick={() => fileInputRef.current?.click()}>
+                {isConversationEnglish(messages) ? '+ Photo' : '+ Photo'}
+              </button>
+            )}
+          </div>
+          <div className="chat-photo-tray-hint">
+            {isConversationEnglish(messages)
+              ? `${pendingPhotoPreviews.length}/${MAX_PHOTOS} photos. Add a word if you like (inherited, buying…), then tap Send.`
+              : `${pendingPhotoPreviews.length}/${MAX_PHOTOS} photos. Ajoutez un mot si vous voulez (hérité, achat…), puis touchez Envoyer.`}
+          </div>
+        </div>
+      )}
 
       <form className="chat-input-form" onSubmit={handleSend}>
         <button
