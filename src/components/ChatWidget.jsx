@@ -11,7 +11,7 @@ function isConversationEnglish(messages) {
     .filter(m => m.role === 'user' && m.text)
     .map(m => m.text)
     .join(' ');
-  if (!userTexts) return false;
+  if (!userTexts) return !/^fr\b/i.test((typeof navigator !== 'undefined' && navigator.language) || 'fr');
   const matches = (userTexts.match(EN_WORDS) || []).length;
   return matches >= 2;
 }

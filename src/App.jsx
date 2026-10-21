@@ -24,14 +24,22 @@ const App = () => {
     setChatInput('');
   };
 
-  const initialMessage = [
-    'Bonjour ! Hello !',
-    'Je suis l\'assistant IA de Piano Technique Montréal. Envoyez-moi une à trois photos de votre piano avec 📎 pour un premier avis, ou posez-moi votre question.',
-    'I\'m the Piano Technique Montréal AI assistant. Send me 1 to 3 photos of your piano with 📎 for a first opinion, or ask me anything.',
+  // Langue de l'appareil (ordinateur ou téléphone) : accueil dans cette langue.
+  // Ensuite, le chat suit la langue dans laquelle le client écrit.
+  const navigateurAnglais = !/^fr\b/i.test((typeof navigator !== 'undefined' && navigator.language) || 'fr');
+  const initialMessage = (navigateurAnglais ? [
+    'Hello! I\'m the Piano Technique Montréal AI assistant.',
+    'Send me 1 to 3 photos of your piano with 📎 for a first opinion, or ask me anything.',
+    '',
+    'Prefer a real person? 514 344-8008 or info@piano-tek.com',
+    '(Vous préférez le français ? Écrivez-moi simplement en français.)',
+  ] : [
+    'Bonjour ! Je suis l\'assistant IA de Piano Technique Montréal.',
+    'Envoyez-moi une à trois photos de votre piano avec 📎 pour un premier avis, ou posez-moi votre question.',
     '',
     'Vous préférez parler à une personne ? 514 344-8008 ou info@piano-tek.com',
-    'Prefer a real person? 514 344-8008 or info@piano-tek.com',
-  ].join('\n');
+    '(Prefer English? Just write to me in English.)',
+  ]).join('\n');
 
   useEffect(() => {
     document.body.classList.toggle('widget-mode', isWidgetMode);
