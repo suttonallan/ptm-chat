@@ -198,6 +198,12 @@ const ChatWidget = ({ isOpen, onClose, initialMessage, inputValue, onInputChange
         </div>
       )}
 
+      <div className="chat-avis-ia">
+        {isConversationEnglish(messages)
+          ? <>AI assistant. Photos are analyzed by Anthropic (United States), stripped of their location and not kept. <a href="https://pianotechniquemontreal.com/en/privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy</a></>
+          : <>Assistant IA. Les photos sont analysées par Anthropic (États-Unis), sans leur position GPS, et ne sont pas conservées. <a href="https://pianotechniquemontreal.com/confidentialite/" target="_blank" rel="noopener noreferrer">Confidentialité</a></>}
+      </div>
+
       <form className="chat-input-form" onSubmit={handleSend}>
         <button
           type="button"

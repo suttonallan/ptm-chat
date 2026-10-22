@@ -622,3 +622,7 @@
 
 /* Liens dans les messages : cliquables et lisibles */
 .message-lien { color: inherit; text-decoration: underline; word-break: break-word; font-weight: 600; }
+
+/* Avis IA et confidentialité (Loi 25), discret, au-dessus de la zone de saisie */
+.chat-avis-ia { font-size: 11px; line-height: 1.35; color: #777; padding: 6px 12px 0; background: #fff; }
+.chat-avis-ia a { color: inherit; text-decoration: underline; }
